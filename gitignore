@@ -1,0 +1,14 @@
+# Vivado project/build artifacts - keep only sources under version control
+*.jou
+*.log
+*.str
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+*.srcs/**/*.dcp
+*.xpr
+.Xil/
+vivado*.backup.jou
+vivado*.backup.log
