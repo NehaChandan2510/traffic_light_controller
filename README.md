@@ -1,22 +1,22 @@
 # Traffic Light Controller (Verilog, Vivado)
 
 A 4-way traffic light controller I built in Verilog for Vivado. The main
-idea here is that it's not a dumb fixed-timer light — each road gets a
+idea here is that it's not a dumb fixed-timer light - each road gets a
 green duration based on how many vehicles are actually waiting on it, and
 there's a proper all-red gap built in so the intersection doesn't go
 straight from one green to another.
 
 ## How it works
 
-There are four roads — A, B, C, D — and they get served in a round-robin
+There are four roads - A, B, C, D - and they get served in a round-robin
 order: A, then B, then C, then D, then back to A, and so on. Each road
 goes through up to four phases:
 
-1. Green — how long depends on the vehicle count (table below)
-2. Yellow — always 5 seconds
-3. All-red safety gap — always 2 seconds, everyone red so the
+1. Green - how long depends on the vehicle count (table below)
+2. Yellow - always 5 seconds
+3. All-red safety gap - always 2 seconds, everyone red so the
    intersection actually clears before the next road gets its green
-4. Startup hold — this one only happens once, right after reset. All
+4. Startup hold - this one only happens once, right after reset. All
    lights stay red for 2 seconds before the cycle even begins, instead of
    snapping straight to green the moment the board powers on
 
@@ -33,17 +33,17 @@ GREEN = 100, YELLOW = 010, RED = 001.
 
 The vehicle count gets read once, right when that road's turn is about to
 start, through vehA / vehB / vehC / vehD (6-bit inputs, 0-63). Worth being
-clear about: this module isn't counting cars itself — it just expects
+clear about: this module isn't counting cars itself - it just expects
 that number to already be sitting on those input pins, coming from
 whatever sensor or camera setup is feeding it.
 
 ### What's going on inside
 
-- road — whose turn it is right now (0=A, 1=B, 2=C, 3=D)
-- phase — 0=green, 1=yellow, 2=all-red gap, 3=startup hold
-- timer — seconds elapsed in whatever phase we're currently in
-- green_time — the green duration picked for the road currently active
-- clk_div / slow_clk — just a clock divider so that one tick of slow_clk
+- road - whose turn it is right now (0=A, 1=B, 2=C, 3=D)
+- phase - 0=green, 1=yellow, 2=all-red gap, 3=startup hold
+- timer - seconds elapsed in whatever phase we're currently in
+- green_time - the green duration picked for the road currently active
+- clk_div / slow_clk - just a clock divider so that one tick of slow_clk
   equals 1 real second. Everything above is timed off that.
 
 ## How to actually run this
@@ -57,7 +57,7 @@ If you just want to simulate it:
 
 If you're putting it on actual hardware:
 1. Bump clk_div's compare value in traffic_light_controller.v up to
-   match your board's real clock — e.g. 49_999_999 if you're on a
+   match your board's real clock - e.g. 49_999_999 if you're on a
    100 MHz clock, so slow_clk ticks once per second instead of once
    every few cycles like it does for simulation.
 2. Add constraints/traffic_light.xdc and edit the pin numbers for
